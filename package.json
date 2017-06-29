@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/lao9/quantified_self#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "knex": "^0.13.0",
     "pg": "^6.4.0"
