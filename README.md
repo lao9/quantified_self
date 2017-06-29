@@ -1,42 +1,42 @@
-#### Quantified Self
+# Quantified Self
 
-## Team Members: Jonathan Kidd & Lauren Oliveri
+### Team Members: Jonathan Kidd & Lauren Oliveri
 
-### API Endpoints
+## API Endpoints
 
-## Food CRUD
+### Food CRUD
 
-# List of All Foods
+#### List of All Foods
 
 `GET /api/v1/foods`
 
-# Show Particular Food
+#### Show Particular Food
 
 `GET /api/v1/foods/:id`
 
-# Create a New Food
+#### Create a New Food
 
 `POST /api/v1/foods?name=[]&calories=[]`
 
-# Update an Existing Food
+#### Update an Existing Food
 
 `PUT /api/v1/foods/:id?name=[]&calories=[]`
 
-# Delete a Food
+#### Delete a Food
 
 `DELETE /api/v1/foods/:id`
 
-## Updating Diary
+### Updating Diary
 
-# List All Meals
+#### List All Meals
 
 `GET /api/v1/diary`
 
-# Add Food to Meal
+#### Add Food to Meal
 
 `POST /api/v1/diary?food_id=[]&meal_id=[]`
 
-# Remove Food from Meal
+#### Remove Food from Meal
 
 `DELETE /api/v1/diary?food_meal_id=[]`
 
