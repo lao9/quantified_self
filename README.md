@@ -38,6 +38,6 @@
 
 # Remove Food from Meal
 
-`DELETE /api/v1/diary?food_meal_id=id`
+`DELETE /api/v1/diary?food_meal_id=[]`
 
 
