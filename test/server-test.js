@@ -3,10 +3,7 @@ var app = require('../server')
 var request = require('request')
 var pry = require('pryjs')
 var bodyParser = require('body-parser')
-
-const environment = process.env.NODE_ENV || 'development';
-const configuration = require('../knexfile')[environment];
-const database = require('knex')(configuration);
+var Food = require('../lib/models/food')
 
 describe('Server', function(){
   before(function(done){
@@ -31,24 +28,21 @@ describe('Server', function(){
   describe('GET /api/foods', function() {
     this.timeout(1000000)
     beforeEach(function(done) {
-      database.raw('INSERT INTO foods (name, calories, created_at) VALUES (?, ?, ?)', ["Banana", 105, new Date])
+      Food.createFood("Banana", 105)
       .then(function() {
-        database.raw('INSERT INTO foods (name, calories, created_at) VALUES (?, ?, ?)', ["French Silk Pie", 340, new Date])
-        .then(function(){
-          done()
-        })
+        Food.createFood("French Silk Pie", 340).then(function() { done() })
       });
     })
 
     afterEach(function(done) {
-      database.raw('TRUNCATE foods RESTART IDENTITY').then(function() {
+      Food.emptyFoodsTable().then(function() {
         done()
       })
     })
 
     it('should have two food items from the resource', function(done) {
       var ourRequest = this.request
-      database.raw('SELECT * FROM foods').then(function(data) {
+      Food.findAllFoods().then(function(data) {
         var food_1 = data.rows[0]
         var food_2 = data.rows[1]
 
