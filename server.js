@@ -1,11 +1,15 @@
 var express = require('express')
 var app = express()
+var Food = require('./lib/models/food')
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self'
 
-app.get('/', function(request, response) {
-  response.send('It\'s a secret to everyone.')
+app.get('/api/foods', function(request, response) {
+  Food.findAllFoods().then(function(data){
+    response.json(data.rows)
+  })
+
 })
 
 app.listen(app.get('port'), function() {
