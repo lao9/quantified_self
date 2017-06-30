@@ -60,4 +60,53 @@ describe('Server', function(){
       })
     })
   })
+
+  describe('POST api/foods', function() {
+    this.timeout(1000000)
+    afterEach(function(done) {
+      Food.emptyFoodsTable().then(function() {
+        done()
+      })
+    })
+
+    it('should recieve and store data', function(done) {
+      var food = {
+        name: "Banana",
+        calories: 105
+      }
+
+      this.request.post('api/foods', { form: food }, function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+        var food1 = parsedFoods[0]
+
+        assert.equal(parsedFoods.length, 1)
+        assert.equal(food1.name, "Banana")
+        assert.equal(food1.calories, 105)
+
+        done()
+      })
+    })
+
+    it('should send 422 when no name', function(done) {
+      var food = {
+        name: "",
+        calories: 100
+      }
+
+      this.request.post('api/foods', { form: food }, function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+
+        Food.findAllFoods().then(function(data){
+          assert.equal(data.rows.length, 0)
+        })
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
+  })
+
 })
