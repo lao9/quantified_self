@@ -107,6 +107,44 @@ describe('Server', function(){
         done()
       })
     })
+
+    it('should send 422 when no calories', function(done) {
+      var food = {
+        name: "Pizza",
+        calories: ""
+      }
+
+      this.request.post('api/foods', { form: food }, function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+
+        Food.findAllFoods().then(function(data){
+          assert.equal(data.rows.length, 0)
+        })
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
+
+    it('should send 422 when nothing is sent', function(done) {
+      var food = {
+        name: "",
+        calories: ""
+      }
+
+      this.request.post('api/foods', { form: food }, function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+
+        Food.findAllFoods().then(function(data){
+          assert.equal(data.rows.length, 0)
+        })
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
   })
 
 })
