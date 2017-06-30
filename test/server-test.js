@@ -41,28 +41,22 @@ describe('Server', function(){
     })
 
     it('should have two food items from the resource', function(done) {
-      var ourRequest = this.request
-      Food.findAllFoods().then(function(data) {
-        var food_1 = data.rows[0]
-        var food_2 = data.rows[1]
+      this.request.get('/api/foods', function(error, response) {
+        if (error) { done(error) }
 
-        ourRequest.get('/api/foods', function(error, response) {
-          if (error) { done(error) }
+        var parsedFoods = JSON.parse(response.body)
+        var food1 = parsedFoods[0]
+        var food2 = parsedFoods[1]
 
-          var parsedFoods = JSON.parse(response.body)
-          var food1 = parsedFoods[0]
-          var food2 = parsedFoods[1]
+        assert.equal(parsedFoods.length, 2)
+        assert.equal(food1.id, 1)
+        assert.equal(food1.name, "Banana")
+        assert.equal(food1.calories, 105)
+        assert.equal(food2.id, 2)
+        assert.equal(food2.name, "French Silk Pie")
+        assert.equal(food2.calories, 340)
 
-          assert.equal(parsedFoods.length, 2)
-          assert.equal(food1.id, food_1.id)
-          assert.equal(food1.name, food_1.name)
-          assert.equal(food1.calories, food_1.calories)
-          assert.equal(food2.id, food_2.id)
-          assert.equal(food2.name, food_2.name)
-          assert.equal(food2.calories, food_2.calories)
-
-          done()
-        })
+        done()
       })
     })
   })
