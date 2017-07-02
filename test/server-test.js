@@ -147,4 +147,56 @@ describe('Server', function(){
     })
   })
 
+  describe('DELETE api/foods/:id', function() {
+    this.timeout(1000000)
+    beforeEach(function(done) {
+      Food.createFood("Banana", 105)
+      .then(function() {
+        Food.createFood("French Silk Pie", 340).then(function() { done() })
+      });
+    })
+
+    afterEach(function(done) {
+      Food.emptyFoodsTable().then(function() {
+        done()
+      })
+    })
+
+    it('should delete the food item', function(done) {
+
+      this.request.delete('api/foods/2', function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+        var food1 = parsedFoods[0]
+
+        assert.equal(parsedFoods.length, 1)
+        assert.equal(food1.name, "Banana")
+        assert.equal(food1.calories, 105)
+
+        done()
+      })
+    })
+
+    it('should not delete an unknown id', function(done) {
+
+      this.request.delete('api/foods/3', function(error, response) {
+        if(error) { done(error) }
+
+        var parsedFoods = JSON.parse(response.body)
+        var food1 = parsedFoods[0]
+        var food2 = parsedFoods[1]
+
+        assert.equal(parsedFoods.length, 2)
+        assert.equal(food1.name, "Banana")
+        assert.equal(food1.calories, 105)
+        assert.equal(food2.name, "French Silk Pie")
+        assert.equal(food2.calories, 340)
+        
+        done()
+      })
+    })
+
+  })
+
 })
