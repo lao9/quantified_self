@@ -16,6 +16,14 @@ app.get('/api/foods', function(request, response) {
   })
 })
 
+app.get('/api/foods/:id', function(request, response) {
+  var id = request.params.id
+
+  Food.find(id).then(function(data){
+    response.json(data.rows[0])
+  })
+})
+
 app.post('/api/foods', function(request, response) {
   var name = request.body.name
   var calories = +request.body.calories
