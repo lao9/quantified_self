@@ -147,4 +147,37 @@ describe('Server', function(){
     })
   })
 
+  describe('PUT /api/foods/:id?name=[]&calories=[]', function() {
+    this.timeout(1000000)
+    beforeEach(function(done) {
+      Food.createFood("Banana", 105).then(function() {
+        done()
+      })
+    })
+
+    afterEach(function(done) {
+      Food.emptyFoodsTable().then(function() {
+        done()
+      })
+    })
+
+    it('should allow update of exisiting food', function(done) {
+      var updatedFood = {
+        name: "Different",
+        calories: 105
+      }
+
+      this.request.put('api/foods/1', { form: updatedFood }, function(error, response) {
+        if(error) { done(error) }
+        var parsedFoods = JSON.parse(response.body)
+        var food1 = parsedFoods[0]
+
+        assert.equal(parsedFoods.length, 1)
+        assert.equal(food1.name, "Different")
+        assert.equal(food1.calories, 105)
+        done()
+      })
+    })
+  })
+
 })
