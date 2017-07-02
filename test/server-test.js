@@ -76,7 +76,7 @@ describe('Server', function(){
       })
     })
 
-    it('should receive and id and return a single food', function(done) {
+    it.skip('should receive and id and return a single food', function(done) {
       this.request.get('api/foods/2', function(error, response) {
         if(error) { done(error) }
 
@@ -89,6 +89,20 @@ describe('Server', function(){
         done()
       })
     })
+
+    it('should return 404 if resource is not found', function(done) {
+      this.request.get('api/foods/3', function(error, response) {
+        if(error) { done(error) }
+
+        var food = JSON.parse(response.body)
+
+        assert.equal(response.statusCode, 404)
+        assert.hasAllKeys(food, ['error'])
+
+        done()
+      })
+    })
+
   })
 
   describe('POST api/foods', function() {
