@@ -30,6 +30,16 @@ app.post('/api/foods', function(request, response) {
   })
 })
 
+app.delete('/api/foods/:id', function(request, response) {
+  var id = request.params.id
+
+  Food.deleteById(id).then(function(){
+    Food.findAllFoods().then(function(data){
+      response.json(data.rows)
+    })
+  })
+})
+
 app.listen(app.get('port'), function() {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`)
 })
