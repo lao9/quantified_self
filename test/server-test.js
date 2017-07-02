@@ -61,6 +61,36 @@ describe('Server', function(){
     })
   })
 
+  describe('GET api/foods/:id', function(){
+    this.timeout(1000000)
+    beforeEach(function(done) {
+      Food.createFood("Banana", 105)
+      .then(function() {
+        Food.createFood("French Silk Pie", 340).then(function() { done() })
+      });
+    })
+
+    afterEach(function(done) {
+      Food.emptyFoodsTable().then(function() {
+        done()
+      })
+    })
+
+    it('should receive and id and return a single food', function(done) {
+      this.request.get('api/foods/2', function(error, response) {
+        if(error) { done(error) }
+
+        var food = JSON.parse(response.body)
+
+        assert.equal(food.id, 2)
+        assert.equal(food.name, "French Silk Pie")
+        assert.equal(food.calories, 340)
+
+        done()
+      })
+    })
+  })
+
   describe('POST api/foods', function() {
     this.timeout(1000000)
     afterEach(function(done) {
@@ -192,7 +222,7 @@ describe('Server', function(){
         assert.equal(food1.calories, 105)
         assert.equal(food2.name, "French Silk Pie")
         assert.equal(food2.calories, 340)
-        
+
         done()
       })
     })
