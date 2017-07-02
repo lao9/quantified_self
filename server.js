@@ -35,6 +35,9 @@ app.put('/api/foods/:id', function(request, response) {
   var name = request.body.name
   var calories = request.body.calories
 
+  if(!name || !calories) {
+    return response.status(422).send({error: 'Missing properties for update, try again.'})
+  }
   Food.updateFood(id, name, calories).then(function() {
     Food.findAllFoods().then(function(data){
       response.json(data.rows)

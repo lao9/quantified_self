@@ -178,6 +178,57 @@ describe('Server', function(){
         done()
       })
     })
+
+    it('should not allow an update with missing name', function(done) {
+      var updatedFood = {
+        name: "",
+        calories: 200
+      }
+
+      this.request.put('api/foods/1', { form: updatedFood }, function(error, response) {
+        if(error) { done(error) }
+
+        var food = JSON.parse(response.body)
+
+        assert.hasAllKeys(food, ['error'])
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
+
+    it('should not allow an update with missing calories', function(done) {
+      var updatedFood = {
+        name: "Chocolates",
+        calories: ""
+      }
+
+      this.request.put('api/foods/1', { form: updatedFood }, function(error, response) {
+        if(error) { done(error) }
+
+        var food = JSON.parse(response.body)
+
+        assert.hasAllKeys(food, ['error'])
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
+
+    it('should not allow an update with all info missing', function(done) {
+      var updatedFood = {
+        name: "",
+        calories: ""
+      }
+
+      this.request.put('api/foods/1', { form: updatedFood }, function(error, response) {
+        if(error) { done(error) }
+
+        var food = JSON.parse(response.body)
+
+        assert.hasAllKeys(food, ['error'])
+        assert.equal(response.statusCode, 422)
+        done()
+      })
+    })
   })
 
 })
