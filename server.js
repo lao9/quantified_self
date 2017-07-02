@@ -20,10 +20,10 @@ app.get('/api/foods/:id', function(request, response) {
   var id = request.params.id
 
   Food.find(id).then(function(data){
-    if(data.rows[0]) {
-      response.json(data.rows[0])
+    if(data.rowCount == 0) {
+      return response.status(404).send({ error: 'Invalid id, try again.'})
     }
-    return response.status(404).send({ error: 'Unknown id, try again.'})
+    response.json(data.rows[0])
   })
 })
 

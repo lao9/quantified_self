@@ -76,7 +76,7 @@ describe('Server', function(){
       })
     })
 
-    it.skip('should receive and id and return a single food', function(done) {
+    it('should receive and id and return a single food', function(done) {
       this.request.get('api/foods/2', function(error, response) {
         if(error) { done(error) }
 
