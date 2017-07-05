@@ -8,36 +8,34 @@
 
 #### List of All Foods
 
-`GET /api/v1/foods`
+`GET /api/foods`
 
 #### Show Particular Food
 
-`GET /api/v1/foods/:id`
+`GET /api/foods/:id`
 
 #### Create a New Food
 
-`POST /api/v1/foods?name=[]&calories=[]`
+`POST /api/foods?name=[]&calories=[]`
 
 #### Update an Existing Food
 
-`PUT /api/v1/foods/:id?name=[]&calories=[]`
+`PUT /api/foods/:id?name=[]&calories=[]`
 
 #### Delete a Food
 
-`DELETE /api/v1/foods/:id`
+`DELETE /api/foods/:id`
 
 ### Updating Diary
 
-#### List All Meals
+#### List All Foods for a Meal
 
-`GET /api/v1/diary`
+`GET /api/meals/:id`
 
 #### Add Food to Meal
 
-`POST /api/v1/diary?food_id=[]&meal_id=[]`
+`POST /api/food_meals?food_id=[]&meal_id=[]`
 
 #### Remove Food from Meal
 
-`DELETE /api/v1/diary?food_meal_id=[]`
-
-
+`DELETE /api/food_meals/:id`
