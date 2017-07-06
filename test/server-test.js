@@ -220,6 +220,13 @@ describe('Server', function(){
         assert.equal(food1.name, "Banana")
         assert.equal(food1.calories, 105)
 
+        Food.find(2).then(function(data) {
+          return data.rows[0]
+        }).then(function(food){
+          assert.equal(food.name, 'French Silk Pie')
+          assert.equal(food.status, 'inactive')
+        })
+
         done()
       })
     })
@@ -530,5 +537,5 @@ describe('Server', function(){
         })
       })
     })
-    
+
 })
