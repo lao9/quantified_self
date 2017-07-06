@@ -68,6 +68,25 @@ app.put('/api/foods/:id', function(request, response) {
   })
 })
 
+app.get('/api/meals/:id', function(request, response){
+  var id = request.params.id
+
+  Meal.findAllFoods(id).then(function(data){
+    response.json(data.rows)
+  })
+})
+
+app.post('/api/food_meals', function(request, response){
+  var foodId = +request.body.foodId
+  var mealId = +request.body.mealId
+
+  FoodMeal.createFm(foodId, mealId).then(function(){
+    Meal.findAllFoods(mealId).then(function(data){
+      response.json(data.rows)
+    })
+  })
+})
+
 app.delete('/api/food_meals/:id', function(request, response) {
   var id = request.params.id
   FoodMeal.findMeal(id).then(function(result){
