@@ -1,13 +1,9 @@
 var express = require('express')
 var app = express()
-var Food = require('./lib/models/food')
-var pry = require('pryjs')
 var bodyParser = require('body-parser')
-var Meal = require('./lib/models/meal')
-var FoodMeal = require('./lib/models/foodMeal')
-var FoodController = require('./lib/controllers/foodController')
-var MealController = require('./lib/controllers/mealController')
-var FoodMealController = require('./lib/controllers/foodMealController')
+var FoodRouter = require('./lib/routers/foodRouter')
+var MealRouter = require('./lib/routers/mealRouter')
+var FoodMealRouter = require('./lib/routers/foodMealRouter')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -15,37 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self'
 
-app.get('/api/foods', function(request, response) {
-  FoodController.index(request, response)
-})
-
-app.get('/api/foods/:id', function(request, response) {
-  FoodController.show(request, response)
-})
-
-app.post('/api/foods', function(request, response) {
-  FoodController.create(request, response)
-})
-
-app.delete('/api/foods/:id', function(request, response) {
-  FoodController.deleteFood(request, response)
-})
-
-app.put('/api/foods/:id', function(request, response) {
-  FoodController.update(request, response)
-})
-
-app.get('/api/meals/:id', function(request, response){
-  MealController.show(request, response)
-})
-
-app.post('/api/food_meals', function(request, response){
-  FoodMealController.create(request, response)
-})
-
-app.delete('/api/food_meals/:id', function(request, response) {
-  FoodMealController.deleteFoodMeal(request, response)
-})
+app.use('/api/foods', FoodRouter)
+app.use('/api/meals', MealRouter)
+app.use('/api/food_meals', FoodMealRouter)
 
 app.listen(app.get('port'), function() {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`)
