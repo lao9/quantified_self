@@ -87,6 +87,18 @@ app.post('/api/food_meals', function(request, response){
   })
 })
 
+app.delete('/api/food_meals/:id', function(request, response) {
+  var id = request.params.id
+  FoodMeal.findMeal(id).then(function(result){
+    var mealId = result.rows[0].meal_id
+    FoodMeal.deleteById(id).then(function(){
+      Meal.findAllFoods(mealId).then(function(data){
+        response.json(data.rows)
+      })
+    })
+  })
+})
+
 app.listen(app.get('port'), function() {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`)
 })

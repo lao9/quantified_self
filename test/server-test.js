@@ -472,4 +472,63 @@ describe('Server', function(){
     })
   })
 
+  describe('DELETE api/food_meals/:id', function() {
+      this.timeout(1000000000)
+      beforeEach(function(done) {
+        Food.createFood('Banana', 105)
+        .then(function() {
+          Food.createFood('French Silk Pie', 340)
+          .then(function() {
+            Food.createFood('Taco', 200)
+            .then(function(){
+              Food.createFood('Pizza', 890)
+              .then(function(){
+                Meal.createMeal('Breakfast')
+                .then(function(){
+                  Meal.createMeal('Lunch')
+                  .then(function(){
+                    FoodMeal.createFm(1, 1)
+                    .then(function(){
+                      FoodMeal.createFm(2, 1)
+                      .then(function(){
+                        FoodMeal.createFm(3, 2)
+                        .then(function(){
+                          FoodMeal.createFm(4, 2)
+                          .then(function() { done() })
+                        })
+                      })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+
+      afterEach(function(done) {
+        Food.emptyFoodsTable()
+        .then(function() {
+          Meal.emptyMealsTable()
+          .then(function() {
+            FoodMeal.emptyFoodMealsTable()
+            .then(function() { done() })
+          })
+        })
+      })
+
+      it('should delete a food meal', function(done) {
+        this.request.delete('api/food_meals/1', function(error, response) {
+          if(error) { done(error) }
+          var parsedFms = JSON.parse(response.body)
+          var foodMeal = parsedFms[0]
+
+          assert.equal(parsedFms.length, 1)
+          assert.equal(foodMeal.name, 'French Silk Pie')
+          assert.equal(foodMeal.calories, 340)
+          done()
+        })
+      })
+    })
+    
 })
