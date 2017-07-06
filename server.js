@@ -3,6 +3,7 @@ var app = express()
 var Food = require('./lib/models/food')
 var pry = require('pryjs')
 var bodyParser = require('body-parser')
+var Meal = require('./lib/models/meal')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -63,6 +64,14 @@ app.put('/api/foods/:id', function(request, response) {
     Food.findAllFoods().then(function(data){
       response.json(data.rows)
     })
+  })
+})
+
+app.get('/api/meals/:id', function(request, response){
+  var id = request.params.id
+
+  Meal.findAllFoods(id).then(function(data){
+    response.json(data.rows)
   })
 })
 
