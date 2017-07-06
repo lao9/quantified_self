@@ -406,4 +406,70 @@ describe('Server', function(){
     })
   })
 
+  describe('GET api/meals/:id', function() {
+    this.timeout(1000000000)
+    beforeEach(function(done) {
+      Food.createFood('Banana', 105)
+        .then(function() {
+          Food.createFood('French Silk Pie', 340)
+            .then(function() {
+              Meal.createMeal('Breakfast')
+                .then(function() {
+                  FoodMeal.createFm(1, 1)
+                    .then(function() {
+                      done()
+                    })
+                })
+            })
+        })
+    })
+
+    afterEach(function(done) {
+      Food.emptyFoodsTable()
+        .then(function() {
+          Meal.emptyMealsTable()
+            .then(function() {
+              FoodMeal.emptyFoodMealsTable()
+                .then(function() {
+                  done()
+                })
+            })
+        })
+    })
+
+    it('should add food to a meal', function(done) {
+
+      foodMeal = {
+        foodId: 2,
+        mealId: 1
+      }
+
+      this.request.post('api/food_meals', {form: foodMeal}, function(error, response) {
+
+        if (error) {
+          done(error)
+        }
+
+        var parsedFoods = JSON.parse(response.body)
+
+        assert.equal(parsedFoods.length, 2)
+
+        var food1 = parsedFoods[0]
+        var food2 = parsedFoods[1]
+
+        assert.hasAllKeys(food1, ['id', 'name', 'calories', 'created_at', 'status', 'food_id', 'meal_id'])
+        assert.hasAllKeys(food2, ['id', 'name', 'calories', 'created_at', 'status', 'food_id', 'meal_id'])
+
+        assert.equal(food1.id, 1)
+        assert.equal(food1.name, 'Banana')
+        assert.equal(food1.calories, 105)
+        assert.equal(food2.id, 2)
+        assert.equal(food2.name, 'French Silk Pie')
+        assert.equal(food2.calories, 340)
+
+        done()
+      })
+    })
+  })
+
 })

@@ -4,6 +4,7 @@ var Food = require('./lib/models/food')
 var pry = require('pryjs')
 var bodyParser = require('body-parser')
 var Meal = require('./lib/models/meal')
+var FoodMeal = require('./lib/models/foodMeal')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -72,6 +73,17 @@ app.get('/api/meals/:id', function(request, response){
 
   Meal.findAllFoods(id).then(function(data){
     response.json(data.rows)
+  })
+})
+
+app.post('/api/food_meals', function(request, response){
+  var foodId = +request.body.foodId
+  var mealId = +request.body.mealId
+
+  FoodMeal.createFm(foodId, mealId).then(function(){
+    Meal.findAllFoods(mealId).then(function(data){
+      response.json(data.rows)
+    })
   })
 })
 
