@@ -46,7 +46,7 @@ app.post('/api/foods', function(request, response) {
 app.delete('/api/foods/:id', function(request, response) {
   var id = request.params.id
 
-  Food.deleteById(id).then(function(){
+  Food.inactivateById(id).then(function(){
     Food.findAllFoods().then(function(data){
       response.json(data.rows)
     })
