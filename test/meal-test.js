@@ -1,7 +1,7 @@
 var assert = require('chai').assert
 var app = require('../server')
 var request = require('request')
-var pry = require('pryjs')
+
 var bodyParser = require('body-parser')
 var Food = require('../lib/models/food')
 var Meal = require('../lib/models/meal')
