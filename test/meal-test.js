@@ -190,11 +190,12 @@ describe('Meal Endpoints', function(){
 
         var parsedFoods = JSON.parse(response.body)
 
+        assert.equal(response.statusCode, 422)
+
         Meal.findAllFoods(1).then(function(data){
           assert.equal(data.rows.length, 1)
         })
 
-        assert.equal(response.statusCode, 422)
         done()
       })
     })
@@ -286,18 +287,15 @@ describe('Meal Endpoints', function(){
       })
 
       it('should not delete an unknown food meal', function(done) {
-        this.request.delete('api/food_meals/3', function(error, response) {
+        this.request.delete('api/food_meals/5', function(error, response) {
           if(error) { done(error) }
 
-          var parsedFms = JSON.parse(response.body)
-          var foodMeal1 = parsedFms[0]
-          var foodMeal2 = parsedFms[1]
+          assert.equal(response.statusCode, 422)
 
-          assert.equal(parsedFms.length, 2)
-          assert.equal(foodMeal1.name, "Banana")
-          assert.equal(foodMeal1.calories, 105)
-          assert.equal(foodMeal2.name, 'French Silk Pie')
-          assert.equal(foodMeal2.calories, 340)
+          FoodMeal.findAllFoodMeals().then(function(data){
+            assert.equal(data.rows.length, 4)
+          })
+
           done()
         })
       })
