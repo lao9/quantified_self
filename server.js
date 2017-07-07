@@ -4,7 +4,9 @@ var bodyParser = require('body-parser')
 var FoodRouter = require('./lib/routers/foodRouter')
 var MealRouter = require('./lib/routers/mealRouter')
 var FoodMealRouter = require('./lib/routers/foodMealRouter')
+const cors = require('cors');
 
+app.use(cors({origin: '*'}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
